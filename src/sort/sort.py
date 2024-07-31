@@ -236,7 +236,7 @@ class Sort(object):
     for i in unmatched_dets:
         trk = KalmanBoxTracker(dets[i,:])
         self.trackers.append(trk)
-        with open('detections.csv', 'a', newline='') as file:
+        with open('logs.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([str(trk.id), frame_count, 'entry'])
     i = len(self.trackers)
@@ -248,7 +248,7 @@ class Sort(object):
         # remove dead tracklet
         if(trk.time_since_update > self.max_age):
           self.trackers.pop(i)
-          with open('detections.csv', 'a', newline='') as file:
+          with open('logs.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([str(trk.id), frame_count, 'exit'])
     if(len(ret)>0):
