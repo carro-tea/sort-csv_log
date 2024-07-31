@@ -251,6 +251,7 @@ class Sort(object):
           with open('logs.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([str(trk.id), frame_count, 'exit'])
+          print('works')
     if(len(ret)>0):
       return np.concatenate(ret)
     return np.empty((0,5))
