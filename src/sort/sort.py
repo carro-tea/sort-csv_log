@@ -239,8 +239,8 @@ class Sort(object):
     for i in unmatched_dets:
         trk = KalmanBoxTracker(dets[i,:])
         with open('logs.csv', 'a', newline='') as file:
-              writer = csv.writer(file)
-              writer.writerow([str(trk.id), self.frame_count, 'entry'])
+          writer = csv.writer(file)
+          writer.writerow([str(trk.id), self.frame_count, 'entry'])
         self.trackers.append(trk)
 
     i = len(self.trackers)
@@ -257,12 +257,18 @@ class Sort(object):
               writer.writerow([str(trk.id), self.frame_count, 'exit'])'''
           self.trackers.pop(i)
 
+        print(trk)
+
         if trk in unmatched_trks:
+            print('works')
             with open('logs.csv', 'a', newline='') as file:
               writer = csv.writer(file)
               writer.writerow([str(trk.id), self.frame_count, 'exit'])
 
         
+    for i in unmatched_trks:
+        print(unmatched_trks[i])
+
 
     if(len(ret)>0):
       return np.concatenate(ret)
