@@ -244,6 +244,7 @@ class Sort(object):
         self.trackers.append(trk)
 
     i = len(self.trackers)
+
     for trk in reversed(self.trackers):
         d = trk.get_state()[0]
         if (trk.time_since_update < 1) and (trk.hit_streak >= self.min_hits or self.frame_count <= self.min_hits):
@@ -255,11 +256,14 @@ class Sort(object):
               writer = csv.writer(file)
               writer.writerow([str(trk.id), self.frame_count, 'exit'])'''
           self.trackers.pop(i)
-        
-    for trk in unmatched_trks:
-        with open('logs.csv', 'a', newline='') as file:
+
+        if trk in unmatched_trks:
+            with open('logs.csv', 'a', newline='') as file:
               writer = csv.writer(file)
               writer.writerow([str(trk.id), self.frame_count, 'exit'])
+
+        
+
     if(len(ret)>0):
       return np.concatenate(ret)
     return np.empty((0,5))
