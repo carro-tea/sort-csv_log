@@ -257,10 +257,10 @@ class Sort(object):
               writer.writerow([str(trk.id), self.frame_count, 'exit'])'''
           self.trackers.pop(i)
 
-        print(trk)
+        
 
         if trk.id in unmatched_trks:
-            print('works')
+            
             with open('logs.csv', 'a', newline='') as file:
               writer = csv.writer(file)
               writer.writerow([str(trk.id), self.frame_count, 'exit'])
