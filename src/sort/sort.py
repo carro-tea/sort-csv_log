@@ -179,6 +179,9 @@ def associate_detections_to_trackers(detections,trackers,iou_threshold = 0.3):
   for t, trk in enumerate(trackers):
     if(t not in matched_indices[:,1]):
       unmatched_trackers.append(t)
+      with open('logs.csv', 'a', newline='') as file:
+              writer = csv.writer(file)
+              writer.writerow([str(trk.id), self.frame_count, 'exit'])
 
   #filter out matched with low IOU
   matches = []
@@ -251,9 +254,9 @@ class Sort(object):
         i -= 1
         # remove dead tracklet
         if(trk.time_since_update > self.max_age):
-          with open('logs.csv', 'a', newline='') as file:
+          '''with open('logs.csv', 'a', newline='') as file:
               writer = csv.writer(file)
-              writer.writerow([str(trk.id), self.frame_count, 'exit'])
+              writer.writerow([str(trk.id), self.frame_count, 'exit'])'''
           self.trackers.pop(i)
     if(len(ret)>0):
       return np.concatenate(ret)
