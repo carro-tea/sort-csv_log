@@ -239,35 +239,22 @@ class Sort(object):
     for i in unmatched_dets:
         trk = KalmanBoxTracker(dets[i,:])
         with open('logs.csv', 'a', newline='') as file:
-          writer = csv.writer(file)
-          writer.writerow([str(trk.id), self.frame_count, 'entry'])
+              writer = csv.writer(file)
+              writer.writerow([str(trk.id), self.frame_count, 'entry'])
         self.trackers.append(trk)
 
     i = len(self.trackers)
-
     for trk in reversed(self.trackers):
         d = trk.get_state()[0]
         if (trk.time_since_update < 1) and (trk.hit_streak >= self.min_hits or self.frame_count <= self.min_hits):
           ret.append(np.concatenate((d,[trk.id+1])).reshape(1,-1)) # +1 as MOT benchmark requires positive
-
-        if (trk.hit_streak >= self.min_hits or self.frame_count <= self.min_hits):
-          if trk.id in unmatched_trks:
-            
-            with open('logs.csv', 'a', newline='') as file:
-              writer = csv.writer(file)
-              writer.writerow([str(trk.id), self.frame_count, 'exit'])
-              
         i -= 1
         # remove dead tracklet
         if(trk.time_since_update > self.max_age):
-          '''with open('logs.csv', 'a', newline='') as file:
+          with open('logs.csv', 'a', newline='') as file:
               writer = csv.writer(file)
-              writer.writerow([str(trk.id), self.frame_count, 'exit'])'''
-          self.trackers.pop(i)    
-
-
+              writer.writerow([str(trk.id), self.frame_count, 'exit'])
+          self.trackers.pop(i)
     if(len(ret)>0):
       return np.concatenate(ret)
     return np.empty((0,5))
-
-
