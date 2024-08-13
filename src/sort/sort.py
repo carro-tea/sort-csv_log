@@ -244,26 +244,22 @@ class Sort(object):
         self.trackers.append(trk)
 
     i = len(self.trackers)
+
     for trk in reversed(self.trackers):
         d = trk.get_state()[0]
         if (trk.time_since_update < 1) and (trk.hit_streak >= self.min_hits or self.frame_count <= self.min_hits):
           ret.append(np.concatenate((d,[trk.id+1])).reshape(1,-1)) # +1 as MOT benchmark requires positive
         i -= 1
 
-        if (trk.time_since_update >= 1):
-          with open('logs.csv', 'a', newline='') as file:
-              writer = csv.writer(file)
-              writer.writerow([str(trk.id), self.frame_count, 'exit'])
-
         # remove dead tracklet
         if(trk.time_since_update > self.max_age):
           
-
-              #instead of putting the print exit code on the unmatched_trks, which is more to store trackers
-              #that don't fit their detections with adequate iou, i should make an array of all tracker ids,
-              #iteratively delete every element that does have a matching detection in the frame,
-              #and after all that iterate through this array and print the exit for each of them
+          with open('logs.csv', 'a', newline='') as file:
+              writer = csv.writer(file)
+              writer.writerow([str(trk.id), self.frame_count, 'exit'])
+              
           self.trackers.pop(i)
+          
     if(len(ret)>0):
       return np.concatenate(ret)
     return np.empty((0,5))
